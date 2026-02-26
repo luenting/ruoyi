@@ -1103,6 +1103,17 @@ export default {
     goTarget(href) {
       window.open(href, "_blank")
     }
+  },// 在布局组件的 created 钩子中
+  created() {
+    const token = this.$route.query.token;
+    if (token) {
+      // 同步到若依的登录状态（复用原有逻辑）
+      this.$store.commit("SET_TOKEN", token);
+      // 刷新用户信息（调用若依的 /getInfo 接口）
+      this.$store.dispatch("GetInfo").then(() => {
+        this.$router.push("/index");
+      });
+    }
   }
 }
 </script>

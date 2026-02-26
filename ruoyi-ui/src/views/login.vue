@@ -49,10 +49,18 @@
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
+        <el-button 
+  type="primary" 
+  style="margin-top: 20px; width: 100%;"
+  @click="keycloakLogin"
+>
+  <i class="el-icon-s-custom"></i> Keycloak 登录
+</el-button>
         <div style="float: right;" v-if="register">
           <router-link class="link-type" :to="'/register'">立即注册</router-link>
         </div>
       </el-form-item>
+      
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
@@ -66,6 +74,7 @@ import { getCodeImg } from "@/api/login"
 import Cookies from "js-cookie"
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 import defaultSettings from '@/settings'
+import { setToken, removeToken } from '@/utils/auth'
 
 export default {
   name: "Login",
@@ -98,6 +107,34 @@ export default {
       redirect: undefined
     }
   },
+  mounted() {
+    // 检查 URL 中是否有 token 参数
+    const token = this.$route.query.token;
+    if (token) {
+      const tokenName = 'Admin-Token';
+      console.log(token)
+      // 存储Token到本地和Vuex
+      setToken(token);
+      localStorage.setItem("Admin-Token", token);
+      this.$store.commit("SET_TOKEN", token);
+      // localStorage.setItem("Admin-Token", token);
+      // this.$store.commit("SET_TOKEN", token);
+      
+      // 2. 调用GetInfo接口（此时请求会指向http://localhost:8081/getInfo）
+      this.$store.dispatch("GetInfo").then(() => {
+        // 跳转到首页，清除URL中的token参数
+        this.$router.push({ 
+          path: this.redirect || "/index",
+          query: {} // 清空参数，避免重复处理
+        });
+      }).catch(err => {
+        this.$message.error("登录失败：" + (err.message || "获取用户信息失败"));
+        // 失败后清除Token，返回登录页
+        removeToken();
+        // window.location.reload();
+      });
+    }
+  },
   watch: {
     $route: {
       handler: function(route) {
@@ -111,6 +148,11 @@ export default {
     this.getCookie()
   },
   methods: {
+    // Keycloak登录跳转
+    keycloakLogin() {
+      // 跳转至后端OAuth2授权地址（keycloak对应application.yml中的客户端名称）
+      window.location.href = `http://127.0.0.1:8081/oauth2/authorization/keycloak`;
+    },
     getCode() {
       getCodeImg().then(res => {
         this.captchaEnabled = res.captchaEnabled === undefined ? true : res.captchaEnabled

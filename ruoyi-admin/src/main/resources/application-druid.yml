@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://localhost:3306/ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: password
+                password: 123456
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -59,3 +59,19 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+    # OAuth2 客户端配置
+    security:
+        oauth2:
+            client:
+                registration:
+                    keycloak: # 客户端名称，自定义
+                        client-id: ruoyi # 对应 Keycloak 中创建的客户端ID
+                        client-secret: MxXAvO93R2vxo9yGkpU9Du5yz3TcFEOo # 从 Keycloak 凭据页复制
+                        client-authentication-method: client_secret_basic
+                        authorization-grant-type: authorization_code
+                        redirect-uri: "{baseUrl}/login/oauth2/code/keycloak" # 固定回调格式
+                        scope: openid,profile # 请求的权限范围
+                provider:
+                    keycloak:
+                        issuer-uri: http://localhost:8080/realms/ruoyi # Keycloak 的 Realm 地址
+                        user-name-attribute: preferred_username # Keycloak 返回的用户名字段
