@@ -99,12 +99,24 @@ const user = {
     // 退出系统
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          commit('SET_PERMISSIONS', [])
-          removeToken()
-          resolve()
+        // 第一步：调用若依后端登出接口（同步清除 Keycloak 会话）
+        logout(state.token).then(res => {
+          console.log(res)
+          console.log(res.code)
+          if (res.code === 200){
+            window.location.href = res.logoutUrl;
+          }else {
+            reject(res.msg)
+          }
+          console.log(res)
+          // 第二步：清除本地 Token 和状态（原生逻辑）
+          // commit('SET_TOKEN', '')
+          // commit('SET_ROLES', [])
+          // commit('SET_PERMISSIONS', [])
+          // removeToken()
+          // // 第三步：跳转到后端登出接口（Keycloak 登出后会跳回前端登录页）
+          // window.location.href = `http://localhost:8081/logout`;
+          // resolve()
         }).catch(error => {
           reject(error)
         })

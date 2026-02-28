@@ -93,6 +93,12 @@ public class SysUser extends BaseEntity
 
     /** 角色ID */
     private Long roleId;
+    /** 角色ID */
+    private String idToken;
+    /** 角色ID */
+    private String keycloakId;
+    /** 角色ID */
+    private String accessToken;
 
     public SysUser()
     {
@@ -332,5 +338,29 @@ public class SysUser extends BaseEntity
             .append("remark", getRemark())
             .append("dept", getDept())
             .toString();
+    }
+
+    public String getIdToken() {
+        return idToken;
+    }
+
+    public void setIdToken(String idToken) {
+        this.idToken = idToken;
+    }
+
+    public String getKeycloakId() {
+        return keycloakId;
+    }
+
+    public void setKeycloakId(String keycloakId) {
+        this.keycloakId = keycloakId;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

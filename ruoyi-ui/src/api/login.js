@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import keycloakRequest from '@/utils/keycloakRequest'
 
 // 登录方法
 export function login(username, password, code, uuid) {
@@ -44,6 +45,14 @@ export function logout() {
   return request({
     url: '/logout',
     method: 'post'
+  })
+}
+
+// 退出方法
+export function keycloakLogout() {
+  return request({
+    url: '/keycloak/logout',
+    method: 'get'
   })
 }
 

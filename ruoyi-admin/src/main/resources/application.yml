@@ -12,6 +12,11 @@ ruoyi:
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
+  oauth2:
+    # OAuth2登录成功后跳转的前端地址（根据你的实际前端地址修改）
+    success-redirect: http://localhost/login
+    # OAuth2登录失败后跳转的前端地址（可选，建议补充）
+    failure-redirect: http://localhost/login?keycloakLogout=1
 
 # 开发环境配置
 server:
@@ -114,6 +119,23 @@ mybatis-plus:
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 加载全局的配置文件
   configLocation: classpath:mybatis/mybatis-config.xml
+#mybatis-plus:
+#  # 搜索指定包别名
+#  type-aliases-package: com.ruoyi.**.domain
+#  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+#  mapper-locations: classpath*:mapper/**/*Mapper.xml
+#  global-config:
+#    db-config:
+#      id-type: auto
+#      field-strategy: 2
+#      refresh-mapper: true
+#      db-type: mysql
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    cache-enabled: false
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  # 加载全局的配置文件
+#  configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
 pagehelper:
@@ -143,3 +165,12 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+# 新增：若依前端地址（根据实际部署地址修改）
+other-params:
+  frontend-url: http://localhost
+keycloak:
+  public-key: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs51c0eifvCQhrCahIqWd5lswLNIPh9tbi7G5QzGnNEwOa1GsXWF1cs6RHrYRnCrALLyCt+bKWvYRaNH/d92IB76HPKSlFl+uv2eOfo+zXj63RHsIH7TU1yK4JctQFcD3UrWRNiZgyjVnxd8Ti0hwyeuHkgzMvUBuI8dr+JG/HX7EgAu9DECePYWKwstkyGWtusR/2iv0gERvo65WUEP1iDrBtCeEpctwnEFVu2zjV+JR4cIKW+nWFUcSUOlrXo5nURQpNqwX4hVTMBoPiDK1z2gwI1KJl3+hPpuReHKGOWtScoqAV5Dac6pXVn+1N6VBkxXOeBcWTxQG7bcC4IdDDwIDAQAB
+    -----END PUBLIC KEY-----

@@ -52,7 +52,7 @@
         <el-button 
   type="primary" 
   style="margin-top: 20px; width: 100%;"
-  @click="keycloakLogin"
+  @click="handleKeycloakLogin"
 >
   <i class="el-icon-s-custom"></i> Keycloak 登录
 </el-button>
@@ -107,34 +107,34 @@ export default {
       redirect: undefined
     }
   },
-  mounted() {
-    // 检查 URL 中是否有 token 参数
-    const token = this.$route.query.token;
-    if (token) {
-      const tokenName = 'Admin-Token';
-      console.log(token)
-      // 存储Token到本地和Vuex
-      setToken(token);
-      localStorage.setItem("Admin-Token", token);
-      this.$store.commit("SET_TOKEN", token);
-      // localStorage.setItem("Admin-Token", token);
-      // this.$store.commit("SET_TOKEN", token);
+  // mounted() {
+  //   // 检查 URL 中是否有 token 参数
+  //   const token = this.$route.query.token;
+  //   if (token) {
+  //     const tokenName = 'Admin-Token';
+  //     console.log(token)
+  //     // 存储Token到本地和Vuex
+  //     setToken(token);
+  //     localStorage.setItem("Admin-Token", token);
+  //     this.$store.commit("SET_TOKEN", token);
+  //     // localStorage.setItem("Admin-Token", token);
+  //     // this.$store.commit("SET_TOKEN", token);
       
-      // 2. 调用GetInfo接口（此时请求会指向http://localhost:8081/getInfo）
-      this.$store.dispatch("GetInfo").then(() => {
-        // 跳转到首页，清除URL中的token参数
-        this.$router.push({ 
-          path: this.redirect || "/index",
-          query: {} // 清空参数，避免重复处理
-        });
-      }).catch(err => {
-        this.$message.error("登录失败：" + (err.message || "获取用户信息失败"));
-        // 失败后清除Token，返回登录页
-        removeToken();
-        // window.location.reload();
-      });
-    }
-  },
+  //     // 2. 调用GetInfo接口（此时请求会指向http://localhost:8081/getInfo）
+  //     this.$store.dispatch("GetInfo").then(() => {
+  //       // 跳转到首页，清除URL中的token参数
+  //       this.$router.push({ 
+  //         path: this.redirect || "/index",
+  //         query: {} // 清空参数，避免重复处理
+  //       });
+  //     }).catch(err => {
+  //       this.$message.error("登录失败：" + (err.message || "获取用户信息失败"));
+  //       // 失败后清除Token，返回登录页
+  //       removeToken();
+  //       // window.location.reload();
+  //     });
+  //   }
+  // },
   watch: {
     $route: {
       handler: function(route) {
@@ -144,14 +144,34 @@ export default {
     }
   },
   created() {
-    this.getCode()
-    this.getCookie()
+    // this.getCode()
+    // this.getCookie()
+    this.getCode();
+    // 3. 页面加载时检查 URL 中的 Token（Keycloak 登录成功后跳转回来）
+    this.checkOAuth2Token();
   },
   methods: {
     // Keycloak登录跳转
-    keycloakLogin() {
+    handleKeycloakLogin() {
       // 跳转至后端OAuth2授权地址（keycloak对应application.yml中的客户端名称）
       window.location.href = `http://127.0.0.1:8081/oauth2/authorization/keycloak`;
+    },
+    // 5. 新增：检查 OAuth2 登录成功后的 Token
+    checkOAuth2Token() {
+      // 解析 URL 参数中的 token
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+      const keycloakLogout = urlParams.get("keycloakLogout");
+      if (token) {
+        // 将 Token 存入 localStorage（和若依原生逻辑一致）
+        setToken(token);
+        // 清除 URL 中的 token 参数（优化体验）
+        window.history.replaceState({}, document.title, window.location.pathname);
+        // 跳转到首页或指定页面
+        this.$router.push(this.redirect || "/");
+      }else if (keycloakLogout === '1'){
+        removeToken()
+      }
     },
     getCode() {
       getCodeImg().then(res => {
