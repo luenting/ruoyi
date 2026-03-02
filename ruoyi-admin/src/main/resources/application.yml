@@ -57,7 +57,7 @@ spring:
     # 国际化资源文件路径
     basename: i18n/messages
   profiles:
-    active: druid
+    active: db
   # 文件上传
   servlet:
     multipart:
@@ -113,29 +113,21 @@ token:
 
 # MyBatis Plus配置
 mybatis-plus:
-  # 搜索指定包别名
   typeAliasesPackage: com.ruoyi.**.domain
-  # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
-  # 加载全局的配置文件
-  configLocation: classpath:mybatis/mybatis-config.xml
-#mybatis-plus:
-#  # 搜索指定包别名
-#  type-aliases-package: com.ruoyi.**.domain
-#  # 配置mapper的扫描，找到所有的mapper.xml映射文件
-#  mapper-locations: classpath*:mapper/**/*Mapper.xml
-#  global-config:
-#    db-config:
-#      id-type: auto
-#      field-strategy: 2
-#      refresh-mapper: true
-#      db-type: mysql
-#  configuration:
-#    map-underscore-to-camel-case: true
-#    cache-enabled: false
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#  # 加载全局的配置文件
 #  configLocation: classpath:mybatis/mybatis-config.xml
+  # 新增：DB2核心适配配置（关键）
+  configuration:
+    # 指定数据库类型为DB2（MyBatis-Plus自动适配语法）
+    database-id: DB2
+  global-config:
+    db-config:
+      # 指定数据库类型为DB2（分页插件、主键策略适配）
+      db-type: db2
+      # DB2自增主键策略（若用序列需改为INPUT）
+      id-type: AUTO
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 
 # PageHelper分页插件
 pagehelper:

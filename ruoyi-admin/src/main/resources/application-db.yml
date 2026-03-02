@@ -1,0 +1,58 @@
+# 数据源配置
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.ibm.db2.jcc.DB2Driver
+        url: jdbc:db2://localhost:50000/ruoyi:currentSchema=RY;connectTimeout=30000;socketTimeout=60000;
+        username: db2inst1
+        password: 123456
+        druid:
+            # 修正：initialSize ≥ minIdle，避免逻辑矛盾
+            initialSize: 10
+            minIdle: 10
+            maxActive: 20
+            maxWait: 60000
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis: 300000
+            maxEvictableIdleTimeMillis: 900000
+            validationQuery: SELECT 1 FROM SYSIBM.SYSDUMMY1
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            # 配置连接超时时间
+            connectTimeout: 30000
+            # 配置网络超时时间
+            socketTimeout: 60000
+            webStatFilter:
+                enabled: true
+            statViewServlet:
+                enabled: true
+                allow:
+                url-pattern: /druid/*
+                login-username: ruoyi
+                login-password: 123456
+            filter:
+                stat:
+                    enabled: true
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: true
+                wall:
+                    config:
+                        multi-statement-allow: true
+    # OAuth2 客户端配置
+    security:
+        oauth2:
+            client:
+                registration:
+                    keycloak: # 客户端名称，自定义
+                        client-id: ruoyi # 对应 Keycloak 中创建的客户端ID
+                        client-secret: MxXAvO93R2vxo9yGkpU9Du5yz3TcFEOo # 从 Keycloak 凭据页复制
+                        client-authentication-method: client_secret_basic
+                        authorization-grant-type: authorization_code
+                        redirect-uri: "{baseUrl}/login/oauth2/code/keycloak" # 固定回调格式
+                        scope: openid,profile # 请求的权限范围
+                provider:
+                    keycloak:
+                        issuer-uri: http://localhost:8080/realms/ruoyi # Keycloak 的 Realm 地址
+                        user-name-attribute: preferred_username # Keycloak 返回的用户名字段

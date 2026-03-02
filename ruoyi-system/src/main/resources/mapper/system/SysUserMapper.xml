@@ -182,7 +182,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="idToken != null and idToken != ''">#{idToken},</if>
 		<if test="keycloakId != null and keycloakId != ''">#{keycloakId},</if>
 		<if test="accessToken != null and accessToken != ''">#{accessToken},</if>
- 			sysdate()
+ 			CURRENT_TIMESTAMP
  		)
 	</insert>
 	
@@ -204,17 +204,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="idToken != null">id_token = #{idToken},</if>
 			<if test="keycloakId != null">keycloak_id = #{keycloakId},</if>
 			<if test="accessToken != null">access_token = #{accessToken},</if>
- 			update_time = sysdate()
+ 			update_time = CURRENT_TIMESTAMP
  		</set>
  		where user_id = #{userId}
 	</update>
 	
 	<update id="updateUserStatus" parameterType="SysUser">
- 		update sys_user set status = #{status}, update_time = sysdate() where user_id = #{userId}
+ 		update sys_user set status = #{status}, update_time = CURRENT_TIMESTAMP where user_id = #{userId}
 	</update>
 	
 	<update id="updateUserAvatar" parameterType="SysUser">
- 		update sys_user set avatar = #{avatar}, update_time = sysdate() where user_id = #{userId}
+ 		update sys_user set avatar = #{avatar}, update_time = CURRENT_TIMESTAMP where user_id = #{userId}
 	</update>
 	
   	<update id="updateLoginInfo" parameterType="SysUser">
@@ -222,7 +222,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<update id="resetUserPwd" parameterType="SysUser">
- 		update sys_user set pwd_update_date = sysdate(), password = #{password}, update_time = sysdate() where user_id = #{userId}
+ 		update sys_user set pwd_update_date = CURRENT_TIMESTAMP, password = #{password}, update_time = CURRENT_TIMESTAMP where user_id = #{userId}
 	</update>
 	
 	<delete id="deleteUserById" parameterType="Long">
