@@ -261,7 +261,7 @@ COMMENT ON TABLE SYS_MENU IS '菜单权限表';
 INSERT INTO SYS_MENU VALUES(1, '系统管理', 0, '1', 'system',           null, '', '', 1, 0, 'M', '0', '0', '', 'system',   'admin', CURRENT_TIMESTAMP, '', null, '系统管理目录');
 INSERT INTO SYS_MENU VALUES(2, '系统监控', 0, '2', 'monitor',          null, '', '', 1, 0, 'M', '0', '0', '', 'monitor',  'admin', CURRENT_TIMESTAMP, '', null, '系统监控目录');
 INSERT INTO SYS_MENU VALUES(3, '系统工具', 0, '3', 'tool',             null, '', '', 1, 0, 'M', '0', '0', '', 'tool',     'admin', CURRENT_TIMESTAMP, '', null, '系统工具目录');
-INSERT INTO SYS_MENU VALUES(4, '若依官网', 0, '4', 'http://ruoyi.vip', null, '', '', 0, 0, 'M', '0', '0', '', 'guide',    'admin', CURRENT_TIMESTAMP, '', null, '若依官网地址');
+-- INSERT INTO SYS_MENU VALUES(4, '若依官网', 0, '4', 'http://ruoyi.vip', null, '', '', 0, 0, 'M', '0', '0', '', 'guide',    'admin', CURRENT_TIMESTAMP, '', null, '若依官网地址');
 -- 二级菜单
 INSERT INTO SYS_MENU VALUES(100,  '用户管理', 1,   '1', 'user',       'system/user/index',        '', '', 1, 0, 'C', '0', '0', 'system:user:list',        'user',          'admin', CURRENT_TIMESTAMP, '', null, '用户管理菜单');
 INSERT INTO SYS_MENU VALUES(101,  '角色管理', 1,   '2', 'role',       'system/role/index',        '', '', 1, 0, 'C', '0', '0', 'system:role:list',        'peoples',       'admin', CURRENT_TIMESTAMP, '', null, '角色管理菜单');
@@ -396,7 +396,7 @@ COMMENT ON TABLE SYS_ROLE_MENU IS '角色和菜单关联表';
 INSERT INTO SYS_ROLE_MENU VALUES (2, 1);
 INSERT INTO SYS_ROLE_MENU VALUES (2, 2);
 INSERT INTO SYS_ROLE_MENU VALUES (2, 3);
-INSERT INTO SYS_ROLE_MENU VALUES (2, 4);
+-- INSERT INTO SYS_ROLE_MENU VALUES (2, 4);
 INSERT INTO SYS_ROLE_MENU VALUES (2, 100);
 INSERT INTO SYS_ROLE_MENU VALUES (2, 101);
 INSERT INTO SYS_ROLE_MENU VALUES (2, 102);
